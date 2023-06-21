@@ -102,6 +102,9 @@ for j = 1:length(input)
         %disp(traj(i,1:3) + [-588.53, -133.30 100]);
 
         point = [[(traj(i,1:3) + [-800+offset, -133.30 30]),(home(4:6))],a,v,0,blend];
+        xy = (point(1:2),1)';
+        P1 = inverse*xy;
+        point = (P1(1:2)', point(3:10));
         if isempty(path)
             path = point;
         else
