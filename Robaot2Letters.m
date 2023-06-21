@@ -20,7 +20,7 @@ load hershey; % Load in the hershey fonts
 %input = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 input = ['A', 'B'];
 
-T1 = SE2(1, 2, 30, 'deg')
+T1 = SE2(0, 0, 0, 'deg')
 
 traj_storage = cell(1:length(input));
 
@@ -88,7 +88,7 @@ for j = 1:length(input)
     offset = 50*(j-1);
     
     %moves to above the next character
-    xy = (-800+offset, -133.30, 1)';
+    xy = [-800+offset, -133.30, 1]';
     P1 = inverse*xy;
     rtde.movej([P1(1:2)', 50, 2.2214, -2.2214, 0.00]);
 
@@ -102,9 +102,9 @@ for j = 1:length(input)
         %disp(traj(i,1:3) + [-588.53, -133.30 100]);
 
         point = [[(traj(i,1:3) + [-800+offset, -133.30 30]),(home(4:6))],a,v,0,blend];
-        xy = (point(1:2),1)';
+        xy = [point(1:2),1]';
         P1 = inverse*xy;
-        point = (P1(1:2)', point(3:10));
+        point = [P1(1:2)', point(3:10)];
         if isempty(path)
             path = point;
         else
