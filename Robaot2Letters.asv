@@ -18,9 +18,19 @@ load hershey; % Load in the hershey fonts
 
 %input = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 %input = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-input = ['A', 'B'];
+input = ['A', 'B','8','i'];
 
-T1 = SE2(1, 2, 30, 'deg')
+%define wrighting hight
+h = 30;
+
+%part 2 variables
+deltaTheta = 30;
+deltaX = 0;
+deltaY = 0;
+
+% gets rotaions and transpose for part 1
+%T1 = SE2((-350), (-588.53), (-90), 'deg');
+T1 = SE2((deltaX-350), (deltaY-518.54), (deltaTheta-90), 'deg')*T1;
 
 traj_storage = cell(1:length(input));
 
@@ -70,9 +80,12 @@ xy = [home(1:2)';1];
 inverse = inv(T1.T);
 P1 = inverse*xy;
 
-home = [P1(1:2)',home(3:6)];
 
 poses = rtde.movej(home);
+
+pathStorage = {};
+
+    path = [];
 
 
 % setting move parameters
@@ -85,39 +98,52 @@ for j = 1:length(input)
     traj = traj_storage{j};
 
     % create offset to space letters
-    offset = 50*(j-1);
+    offset = 40*(j-1);
     
-    %moves to above the next character
-    rtde.movej([-800+offset, -133.30, 50, 2.2214, -2.2214, 0.00]);
-
-    % Creating a path array
-    path = [];
-
+    %moving up between letters
+    point = [-700+offset, -133.30, 60, 2.2214, -2.2214, 0.00,a,v,0,blend];
+    xy = [point(1:2),1]';
+    P1 = inverse*xy;
+    point = [P1(1:2)', point(3:10)];
+    path = cat(1,path,point);
 
     % Populate the path array
     for i = 1:size(traj,1)
         %disp(i);
         %disp(traj(i,1:3) + [-588.53, -133.30 100]);
-        
-        point = [[(traj(i,1:3) + [-800+offset, -133.30 30]),(home(4:6))],a,v,0,blend];
+
+        point = [[(traj(i,1:3) + [-700+offset, -133.30 h]),(home(4:6))],a,v,0,blend];
+        xy = [point(1:2),1]';
+        P1 = inverse*xy;
+        point = [P1(1:2)', point(3:10)];
         if isempty(path)
             path = point;
         else
             path = cat(1,path,point);
         end
+
     end
-
-    % Execute the movement!
-    poses = rtde.movej(path);
-
-    hold on
-    rtde.drawPath(poses);
-
-    
-
 
 
 end
+    
+%rotating the letters
+% theta = 90;
+% R = [cosd(theta) -sind(theta) ; sind(theta) cosd(theta)];
+% rotpoint = R*path(1:2,:);
+% path(1:2,:) = rotpoint;
+
+%excute movment
+%path(:,1:3) = transpose(rotz(pi/2)*path(:,1:3)');
+
+poses = rtde.movej(path);
+
+rtde.movej(home);
+
+
+hold on
+rtde.drawPath(poses);
+
 
 
 
