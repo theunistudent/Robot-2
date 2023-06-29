@@ -18,7 +18,7 @@ load hershey; % Load in the hershey fonts
 
 %input = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 %input = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-input = ['A', 'B','8','i']
+input = ['A', 'B','8']
 
 %define wrighting hight
 h = 30;
@@ -98,7 +98,7 @@ for j = 1:length(input)
     traj = traj_storage{j};
 
     % create offset to space letters
-    offset = 40*(j-1);
+    offset = 30*(j-1);
     
     %moving up between letters
     point = [-700+offset, -133.30, 60, 2.2214, -2.2214, 0.00,a,v,0,blend];
@@ -145,6 +145,6 @@ hold on
 rtde.drawPath(poses);
 
 
-
+fprintf('Program Complete\n');
 
 rtde.close;

@@ -17,8 +17,8 @@ startup_rvc; % Startup the rvc toolbox
 load hershey; % Load in the hershey fonts
 
 
-input = ['22','-','2']
-soltution = str2num(input)
+input = ['35','+','6']
+soltution = str2num(input);
 
 %creates empty second argument
 secondArgument = [];
@@ -40,16 +40,14 @@ for i = 1:length(input)
 end
     
 
-firstArgument
-secondArgument
-operator
+
 
 %sudo code
 %load everything in as one long thing
 %when outputing use a counter to now what you are up to
 %use transforms to move it around.
 
-allCharecters = [input, firstArgument, secondArgument, operator, num2str(soltution)];
+allCharecters = [input, '=', firstArgument, secondArgument, operator, num2str(soltution)];
 
 
 
@@ -140,13 +138,13 @@ for j = 1:length(allCharecters)
     % create offset to space letters
 
         %change Y offset
-    if j == length(input)+1
+    if j == length(input)+2
         k = k + 1;
         w = 0;
-    elseif j == length(input)+length(firstArgument)+1
+    elseif j == length(input)+length(firstArgument)+2
         k = k + 1;
         w = 0;
-    elseif j == length(input)+length(firstArgument)+length(secondArgument)+length(operator)+1
+    elseif j == length(input)+length(firstArgument)+length(secondArgument)+length(operator)+2
         k = k + 1;
         w = 0;
     end
@@ -154,7 +152,7 @@ for j = 1:length(allCharecters)
 
     
     % invcrement l for the X offset
-    if j < length(input)+1
+    if j < length(input)+2
         l = l + 1;
         if j == length(firstArgument)+1
             center = l;
@@ -162,38 +160,34 @@ for j = 1:length(allCharecters)
         
     end
     % x offset for first argument
-    if j > length(input) && j <= length(input)+length(firstArgument)
+    if j > length(input)+1 && j <= length(input)+length(firstArgument)+1
         w = w + 1;
         l = center - length(firstArgument)+w;
         
     end
     %for second argument and operator
-    if j > length(input)+length(firstArgument) && j <= length(input)+length(firstArgument)+length(secondArgument)+length(operator)
+    if j > length(input)+length(firstArgument)+1 && j <= length(input)+length(firstArgument)+length(secondArgument)+length(operator)+1
         w = w + 1;
         l = center - length(secondArgument) + w;
         
         
     end
     
-    if j > length(input)+length(firstArgument)+length(secondArgument)+length(operator)
-        center
-        w = w + 1
-        l = center - length(num2str(soltution))+w
+    if j > length(input)+length(firstArgument)+length(secondArgument)+length(operator)+1
+        w = w + 1;
+        l = center - length(num2str(soltution))+w;
     end
    
 
 
 
-% center
-% l
-% w
-% k
 
 
-    offsetX = 40*(l-1);
+
+    offsetX = 30*(l-1);
     
 
-    offsetY = 40*(k-1);
+    offsetY = 35*(k-1);
 
 
 
@@ -242,6 +236,8 @@ rtde.movej(home);
 
 hold on
 rtde.drawPath(poses);
+
+fprintf('Program Complete\n');
 
 
 
